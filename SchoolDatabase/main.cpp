@@ -22,6 +22,10 @@ void studentMenu();
 void adminMenu();
 void defaultMenu();
 void teacherMenu();
+void newStudent();
+void addDropClass();
+void viewClass();
+void viewGrades();
 
 void sdatabase_save()
 {
@@ -40,7 +44,128 @@ void sdatabase_save()
         }
     }
 }
+//register as a new student
+void newStudent()
+{
+    string fname;
+    string lname;
+    ofstream outFile;
+    char response;
+    //write to file called student1.txt
+    outFile.open("student1.txt");
+    if(outFile.fail())
+    {
+        cout << "student1.txt was not opened successfully." << endl;
+        exit(1);
+    }
 
+    outFile << "Student name" << setw(12)
+            << "Grade 1" << setw(12)
+            << "Grade 2" << setw(12)
+            << "Grade 3" << setw(12)
+            << "Grade 4" << setw(12)
+            << "Wt Ave" << endl;
+    cout << "Enter your first name: ";
+    cin >> fname;
+    cout << "Enter your last name: ";
+    cin >> lname;
+    //display the input to user and give user the choice if it is correct or not
+    cout << "Your name is " << fname << " " << lname << ".\n"
+         << "Is this correct?(y or n): ";
+    cin >> response;//user response to yes or no
+
+    //if it is correct then a message display to let user know they can register for classes
+    if(tolower(response) == 'y')
+    {
+        outFile << fname << " " << lname;
+        cout << "Now you can register for classes!" << endl;
+    }
+    //if it is not correct then user can input their names again
+    if(tolower(response) == 'n')
+    {
+        //this while loop while continue to run as long as response is no or n
+        while(response != 'y')
+        {
+            cout << "Enter your first name: ";
+            cin >> fname;
+            cout << "Enter your last name: ";
+            cin >> lname;
+            //display the input to user and give user the choice if it is correct or not
+            cout << "Your name is " << fname << " " << lname << ".\n"
+                 << "Is this correct?(y or n): ";
+            cin >> response;
+            if(response == 'y')
+            {
+                outFile << fname << " " << lname;
+            }
+        }
+    }
+}
+//add or drop classes(student)
+void addDropClass()
+{
+    char input;
+    cout << "Do you want to add or drop class?\n"
+         << "To add class enter (a) and to drop class enter (d) (a or d): ";
+    cin >> input;
+    if(input == 'a')
+    {
+        int numb;
+        char choice;
+        cout << "Here is the list of classes offer this semester: " << endl;
+        //here will be the classes file
+        cout << "Please enter the number of the class you want to take: ";
+        cin >> numb;
+        //I will put in if-else statement here to get the class that user chose
+
+        //the for loop here is to limit the classes student can take to 4
+        for(int i = 0; i < 3; i++)
+        {
+            cout << "Would you like to add another class(y or n): ";
+            cin >> choice;
+            if(choice == 'y')
+            {
+                //redisplay the class again
+                cout << "Enter the number of the class you want to take: ";
+                cin >> numb;
+                //if-else statement here to get the class user chose
+            }
+            if(choice == 'n')
+            {
+                cout << "Now you can check your schedule!" << endl;
+                break;
+            }
+        }
+
+        if(input == 'd')
+        {
+            ifstream inFile;
+            int cnum;
+            inFile.open();
+            if(inFile.fail())
+            {
+                cout << "You have not yet register for any classes!" << endl;
+                exit(1);
+            }
+
+            cout << "Which class would you like to drop(enter the number): ";
+            cin >> cnum;
+            //here would be codes to delete the class of student choice
+        }
+
+
+    }
+}
+//view class schedule
+void viewClass()
+{
+    //after all the add or drop classes the class schedule will display
+}
+//view grades
+void viewGrades()
+{
+    //the grades will be display with the file upload by the teacher
+}
 void teacherMenu()
 {
     {
