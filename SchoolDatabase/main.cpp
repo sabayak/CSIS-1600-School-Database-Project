@@ -26,7 +26,39 @@ void newStudent();
 void addDropClass();
 void viewClass();
 void viewGrades();
-
+//Load Student Database
+void sdatabase_load()
+{
+    ifstream sdatabaseInFile;
+    sdatabaseInFile.open("sdatabase.txt");
+    if(!sdatabaseInFile)
+    {
+        cout<<"Cannot load file"<<endl;
+        return;
+    }
+    else
+    {
+        for(int i = 0; i < sizeof sdatabase; i++)
+        {
+            sdatabaseInFile>>
+            sdatabase[i].fname<<
+            sdatabase[i].lname<<
+            sdatabase[i].year<<
+            sdatabase[i].active<<
+            sdatabase[i].class1<<
+            sdatabase[i].class2<<
+            sdatabase[i].class3<<
+            sdatabase[i].class4<<
+            sdatabase[i].grade1<<
+            sdatabase[i].grade2<<
+            sdatabase[i].grade3<<
+            sdatabase[i].grade4<<
+            cout <<"Student no "<<i<<"loaded"<<endl;
+        }
+        cout <<"All students have been successfully loaded"<<endl;
+        sdatabaseInFile.close();
+    }
+}
 void sdatabase_save()
 {
     ofstream sdatabaseOutFile;
@@ -40,8 +72,23 @@ void sdatabase_save()
     {
         for(int i = 0; i < sizeof sdatabase; i++)
         {
-            cout << sdatabase[i].fname<<sdatabase[i].lname;
+            sdatabaseInFile>>
+            sdatabase[i].fname<<
+            sdatabase[i].lname<<
+            sdatabase[i].year<<
+            sdatabase[i].active<<
+            sdatabase[i].class1<<
+            sdatabase[i].class2<<
+            sdatabase[i].class3<<
+            sdatabase[i].class4<<
+            sdatabase[i].grade1<<
+            sdatabase[i].grade2<<
+            sdatabase[i].grade3<<
+            sdatabase[i].grade4<<
+            cout <<"Student no "<<i<<"saved"<<endl;
         }
+        cout <<"All students have been successfully saved"<<endl;
+        sdatabaseInFile.close();
     }
 }
 //register as a new student
