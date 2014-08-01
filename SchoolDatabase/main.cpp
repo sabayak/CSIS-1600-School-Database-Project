@@ -2,19 +2,40 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <vector>
 using namespace std;
-struct students{
+int slines = 0;
+int tlines = 0;
+
+void getdbSize()
+{
+
+    std::string sline, tline;
+    std::ifstream sfile("students.txt");
+    std::ifstream tfile("teachers.txt");
+
+    while (std::getline(sfile, sline))
+        ++slines;
+    while (std::getline(tfile, tline))
+        ++tlines;
+
+
+}
+
+struct Students{
     string fname,lname;
     int year;
     int active;
     int class1, class2, class3, class4;
     string grade1, grade2, grade3, grade4;
-}sdatabase[10];
-struct teachers{
+}sdb[10];
+struct Teachers{
     string fname, lname;
     int class1, class2, class3, class4;
-}tdatabase[3];
-
+}tdb[10];
+struct Courses{
+    string courses;
+}cdb[10];
 
 
 using namespace std;
@@ -27,6 +48,30 @@ void addDropClass();
 void viewClass();
 void viewGrades();
 //Load Student Database
+void classes_load()
+{
+
+    ifstream classesInFile("classes.txt");
+
+    if(!classesInFile)
+    {
+        cout<<"Cannot load file"<<endl;
+        return;
+    }
+    else
+    {
+        for(int i = 0; i < sizeof(cdb)/sizeof(cdb[0]); i++)
+        {
+            classesInFile>>
+            cdb[i].courses;
+
+        }
+        cout <<"All classes have been successfully loaded"<<endl;
+
+        classesInFile.close();
+    }
+}
+
 void sdatabase_load()
 {
 
@@ -41,22 +86,22 @@ void sdatabase_load()
     else
     {
 
-        for(int i = 0; i < sizeof(sdatabase)/sizeof(sdatabase[0]); i++)
+        for(int i = 0; i < sizeof(sdb)/sizeof(sdb[0]); i++)
         {
             sdatabaseInFile>>
-            sdatabase[i].fname>>
-            sdatabase[i].lname>>
-            sdatabase[i].year>>
-            sdatabase[i].active>>
-            sdatabase[i].class1>>
-            sdatabase[i].class2>>
-            sdatabase[i].class3>>
-            sdatabase[i].class4>>
-            sdatabase[i].grade1>>
-            sdatabase[i].grade2>>
-            sdatabase[i].grade3>>
-            sdatabase[i].grade4;
-            cout <<"Student no "<<i<<" loaded"<<endl;
+            sdb[i].fname>>
+            sdb[i].lname>>
+            sdb[i].year>>
+            sdb[i].active>>
+            sdb[i].class1>>
+            sdb[i].class2>>
+            sdb[i].class3>>
+            sdb[i].class4>>
+            sdb[i].grade1>>
+            sdb[i].grade2>>
+            sdb[i].grade3>>
+            sdb[i].grade4;
+            //cout <<"Student no "<<i<<" loaded"<<endl;
         }
         cout <<"All students have been successfully loaded"<<endl;
         sdatabaseInFile.close();
@@ -72,21 +117,21 @@ void sdatabase_save()
     }
     else
     {
-        for(int i = 0; i < sizeof(sdatabase)/sizeof(sdatabase[0]); i++)
+        for(int i = 0; i < sizeof(sdb)/sizeof(sdb[0]); i++)
         {
             sdatabaseOutFile<<
-            sdatabase[i].fname<<
-            sdatabase[i].lname<<
-            sdatabase[i].year<<
-            sdatabase[i].active<<
-            sdatabase[i].class1<<
-            sdatabase[i].class2<<
-            sdatabase[i].class3<<
-            sdatabase[i].class4<<
-            sdatabase[i].grade1<<
-            sdatabase[i].grade2<<
-            sdatabase[i].grade3<<
-            sdatabase[i].grade4;
+            sdb[i].fname<<
+            sdb[i].lname<<
+            sdb[i].year<<
+            sdb[i].active<<
+            sdb[i].class1<<
+            sdb[i].class2<<
+            sdb[i].class3<<
+            sdb[i].class4<<
+            sdb[i].grade1<<
+            sdb[i].grade2<<
+            sdb[i].grade3<<
+            sdb[i].grade4;
             cout <<"Student no "<<i<<"saved"<<endl;
         }
         cout <<"All students have been successfully saved"<<endl;
@@ -107,16 +152,16 @@ void tdatabase_load()
     else
     {
 
-        for(int i = 0; i < sizeof(tdatabase)/sizeof(tdatabase[0]); i++)
+        for(int i = 0; i < sizeof(tdb)/sizeof(tdb[0]); i++)
         {
             tdatabaseInFile>>
-            tdatabase[i].fname>>
-            tdatabase[i].lname>>
-            sdatabase[i].class1>>
-            sdatabase[i].class2>>
-            sdatabase[i].class3>>
-            sdatabase[i].class4;
-            cout <<"Teacher no "<<i<<"loaded"<<endl;
+            tdb[i].fname>>
+            tdb[i].lname>>
+            sdb[i].class1>>
+            sdb[i].class2>>
+            sdb[i].class3>>
+            sdb[i].class4;
+            //cout <<"Teacher no "<<i<<"loaded"<<endl;
         }
         cout <<"All teachers have been successfully loaded"<<endl;
         tdatabaseInFile.close();
@@ -132,15 +177,15 @@ void tdatabase_save()
     }
     else
     {
-        for(int i = 0; i < sizeof(tdatabase)/sizeof(tdatabase[0]); i++)
+        for(int i = 0; i < sizeof(tdb)/sizeof(tdb[0]); i++)
         {
             tdatabaseOutFile<<
-            tdatabase[i].fname<<
-            tdatabase[i].lname<<
-            tdatabase[i].class1<<
-            tdatabase[i].class2<<
-            tdatabase[i].class3<<
-            tdatabase[i].class4;
+            tdb[i].fname<<
+            tdb[i].lname<<
+            tdb[i].class1<<
+            tdb[i].class2<<
+            tdb[i].class3<<
+            tdb[i].class4;
             cout <<"Teacher no "<<i<<"saved"<<endl;
         }
         cout <<"All teachers have been successfully saved"<<endl;
@@ -152,22 +197,8 @@ void newStudent()
 {
     string fname;
     string lname;
-    ofstream outFile;
     char response;
-    //write to file called student1.txt
-    outFile.open("student1.txt");
-    if(outFile.fail())
-    {
-        cout << "student1.txt was not opened successfully." << endl;
-        exit(1);
-    }
 
-    outFile << "Student name" << setw(12)
-            << "Grade 1" << setw(12)
-            << "Grade 2" << setw(12)
-            << "Grade 3" << setw(12)
-            << "Grade 4" << setw(12)
-            << "Wt Ave" << endl;
     cout << "Enter your first name: ";
     cin >> fname;
     cout << "Enter your last name: ";
@@ -180,7 +211,7 @@ void newStudent()
     //if it is correct then a message display to let user know they can register for classes
     if(tolower(response) == 'y')
     {
-        outFile << fname << " " << lname;
+        //outFile << fname << " " << lname;
         cout << "Now you can register for classes!" << endl;
     }
     //if it is not correct then user can input their names again
@@ -199,7 +230,8 @@ void newStudent()
             cin >> response;
             if(response == 'y')
             {
-                outFile << fname << " " << lname;
+                sdb[slines+1].fname = fname;
+                sdb[slines+1].lname = lname;
             }
         }
     }
@@ -470,11 +502,15 @@ void defaultMenu()
            }while (selection != 0 );
     }
 }
+
+
 int main()
 {
+    getdbSize();
 
     sdatabase_load();
     tdatabase_load();
+    classes_load();
     //Test print the database after initialization
     /*for(int j = 0; j < 5; j++)
         {
