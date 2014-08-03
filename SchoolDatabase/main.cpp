@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 using namespace std;
+
 int slines = 0;
 int tlines = 0;
 
@@ -38,7 +39,6 @@ struct Courses{
 }cdb[10];
 
 
-using namespace std;
 void studentMenu();
 void adminMenu();
 void defaultMenu();
@@ -47,11 +47,12 @@ void newStudent();
 void addDropClass();
 void viewClass();
 void viewGrades();
+
 //Load Student Database
 void classes_load()
 {
 
-    ifstream classesInFile("classes.txt");
+    ifstream classesInFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/classes.txt");
 
     if(!classesInFile)
     {
@@ -75,10 +76,11 @@ void classes_load()
 void sdatabase_load()
 {
 
-    ifstream sdatabaseInFile("students.txt");
+    ifstream sdatabaseInFile;
 
+    sdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt"); // open students.txt
 
-    if(!sdatabaseInFile)
+    if(sdatabaseInFile.fail())
     {
         cout<<"Cannot load file"<<endl;
         return;
@@ -109,7 +111,7 @@ void sdatabase_load()
 }
 void sdatabase_save()
 {
-    ofstream sdatabaseOutFile("students.txt");
+    ofstream sdatabaseOutFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt");
     if(!sdatabaseOutFile)
     {
         cout<<"Cannot save file"<<endl;
@@ -141,7 +143,9 @@ void sdatabase_save()
 void tdatabase_load()
 {
 
-    ifstream tdatabaseInFile("teachers.txt");
+    ifstream tdatabaseInFile;
+
+    tdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/teachers.txt");
 
 
     if(!tdatabaseInFile)
@@ -169,7 +173,7 @@ void tdatabase_load()
 }
 void tdatabase_save()
 {
-    ofstream tdatabaseOutFile("teachers.txt");
+    ofstream tdatabaseOutFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/teachers.txt");
     if(!tdatabaseOutFile)
     {
         cout<<"Cannot save file"<<endl;
@@ -237,7 +241,7 @@ void newStudent()
     }
 }
 //add or drop classes(student)
-/*void addDropClass()
+void addDropClass()
 {
     char input;
     cout << "Do you want to add or drop class?\n"
@@ -276,7 +280,7 @@ void newStudent()
         {
             ifstream inFile;
             int cnum;
-            inFile.open();
+            inFile.open("classes.txt");
             if(inFile.fail())
             {
                 cout << "You have not yet register for any classes!" << endl;
@@ -291,7 +295,7 @@ void newStudent()
 
     }
 }
-*/
+
 //view class schedule
 void viewClass()
 {
@@ -335,13 +339,14 @@ void teacherMenu()
                        break;
                    case '3':
                        //Assign Grades
-                       adminMenu();
+                       viewGrades();
                        break;
                    case '4':
                        defaultMenu();
                        break;
                    case '5':
                        cout << "Goodbye.\n";
+                       exit(0); //Exit Program
                        selection = 0;
                        break;
 
@@ -377,16 +382,16 @@ void studentMenu()
                {
                    case '1':
                        //Register
-                       studentMenu();
+                       newStudent();
                        break;
 
                    case '2':
                        //Add/Remove Classes
-                       teacherMenu();
+                       addDropClass();
                        break;
                    case '3':
                        //View Class Schedule
-                       adminMenu();
+                       viewClass();
                        break;
                    case '4':
                        //View Grades
@@ -397,6 +402,7 @@ void studentMenu()
                        break;
                    case '6':
                        cout << "Goodbye.\n";
+                       exit(0); //Exit Program
                        selection = 0;
                        break;
 
@@ -447,6 +453,7 @@ void adminMenu()
                        break;
                    case '5':
                        cout << "Goodbye.\n";
+                       exit(0); //Exit Program
                        selection = 0;
                        break;
 
@@ -493,6 +500,7 @@ void defaultMenu()
                        break;
                    case '4':
                        cout << "Goodbye.\n";
+                       exit(0); //Exit Program
                        selection = 0;
                        break;
 
@@ -509,10 +517,12 @@ int main()
     getdbSize();
 
     sdatabase_load();
+
     tdatabase_load();
     classes_load();
     //Test print the database after initialization
-    /*for(int j = 0; j < 5; j++)
+    /*
+    for(int j = 0; j < 5; j++)
         {
         cout<<sdatabase[j].fname<<sdatabase[j].lname;
         cout<<tdatabase[j].fname<<tdatabase[j].lname;
@@ -520,4 +530,3 @@ int main()
     */
    defaultMenu();
 }
-
