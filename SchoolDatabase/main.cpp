@@ -69,7 +69,7 @@ void displayStudentStructure()
 
     int testvar = sizeof(sdb)/sizeof(sdb[0]);
 
-    sdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt"); // open students.txt
+    sdatabaseInFile.open("students.txt"); // open students.txt
 
     if(sdatabaseInFile.fail())
     {
@@ -123,7 +123,7 @@ void displayStudentStructure()
 void classes_load()
 {
 
-    ifstream classesInFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/classes.txt");
+    ifstream classesInFile("classes.txt");
 
     if(!classesInFile)
     {
@@ -149,7 +149,7 @@ void sdatabase_load()
 
     ifstream sdatabaseInFile;
 
-    sdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt"); // open students.txt
+    sdatabaseInFile.open("students.txt"); // open students.txt
 
     if(sdatabaseInFile.fail())
     {
@@ -182,7 +182,7 @@ void sdatabase_load()
 }
 void sdatabase_save()
 {
-    ofstream sdatabaseOutFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt");
+    ofstream sdatabaseOutFile("students.txt");
 
     if(!sdatabaseOutFile)
     {
@@ -217,7 +217,7 @@ void tdatabase_load()
 
     ifstream tdatabaseInFile;
 
-    tdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/teachers.txt");
+    tdatabaseInFile.open("teachers.txt");
 
 
     if(!tdatabaseInFile)
@@ -245,7 +245,7 @@ void tdatabase_load()
 }
 void tdatabase_save()
 {
-    ofstream tdatabaseOutFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/teachers.txt");
+    ofstream tdatabaseOutFile("teachers.txt");
     if(!tdatabaseOutFile)
     {
         cout<<"Cannot save file"<<endl;
