@@ -7,6 +7,11 @@ using namespace std;
 
 int slines = 0;
 int tlines = 0;
+string line;
+int currentNumberOfStudents = 0;
+int currentNumberOfTeachers = 0;
+
+
 
 void getdbSize()
 {
@@ -25,6 +30,7 @@ void getdbSize()
 
 struct Students{
     string fname,lname;
+    string space = " ";
     int year;
     int active;
     int class1, class2, class3, class4;
@@ -32,6 +38,7 @@ struct Students{
 }sdb[10];
 struct Teachers{
     string fname, lname;
+    string space = " ";
     int class1, class2, class3, class4;
 }tdb[10];
 struct Courses{
@@ -47,6 +54,64 @@ void newStudent();
 void addDropClass();
 void viewClass();
 void viewGrades();
+void displayStudentStructure();
+void approveStudent();
+
+void displayStudentStructure()
+{
+    ifstream sdatabaseInFile;
+
+    int testvar = sizeof(sdb)/sizeof(sdb[0]);
+
+    sdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt"); // open students.txt
+
+    if(sdatabaseInFile.fail())
+    {
+        cout<<"Cannot load file"<<endl;
+        return;
+    }
+    else
+    {
+
+        for(int i = 0; i < sizeof(sdb)/sizeof(sdb[0]); i++)
+        {
+            sdatabaseInFile>>
+            sdb[i].fname>>
+            sdb[i].lname>>
+            sdb[i].year>>
+            sdb[i].active>>
+            sdb[i].class1>>
+            sdb[i].class2>>
+            sdb[i].class3>>
+            sdb[i].class4>>
+            sdb[i].grade1>>
+            sdb[i].grade2>>
+            sdb[i].grade3>>
+            sdb[i].grade4;
+            cout <<"Student no "<<i<<" loaded"<<endl;
+        }
+        cout <<"All students have been successfully loaded"<<endl;
+    }
+
+
+        for(int i = 0; i < testvar; i++)
+        {
+            cout <<
+            sdb[i].fname<<
+            sdb[i].lname<<
+            sdb[i].year<<
+            sdb[i].active<<
+            sdb[i].class1<<
+            sdb[i].class2<<
+            sdb[i].class3<<
+            sdb[i].class4<<
+            sdb[i].grade1<<
+            sdb[i].grade2<<
+            sdb[i].grade3<<
+            sdb[i].grade4 << endl;
+            //cout <<"Student no "<<i<<" loaded"<<endl;
+        }
+}
 
 //Load Student Database
 void classes_load()
@@ -103,7 +168,7 @@ void sdatabase_load()
             sdb[i].grade2>>
             sdb[i].grade3>>
             sdb[i].grade4;
-            //cout <<"Student no "<<i<<" loaded"<<endl;
+            cout <<"Student no "<<i<<" loaded"<<endl;
         }
         cout <<"All students have been successfully loaded"<<endl;
         sdatabaseInFile.close();
@@ -112,6 +177,7 @@ void sdatabase_load()
 void sdatabase_save()
 {
     ofstream sdatabaseOutFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt");
+
     if(!sdatabaseOutFile)
     {
         cout<<"Cannot save file"<<endl;
@@ -185,12 +251,14 @@ void tdatabase_save()
         {
             tdatabaseOutFile<<
             tdb[i].fname<<
+            tdb[i].space<<
             tdb[i].lname<<
             tdb[i].class1<<
             tdb[i].class2<<
             tdb[i].class3<<
             tdb[i].class4;
             cout <<"Teacher no "<<i<<"saved"<<endl;
+            cout << tdb[i].fname << endl;
         }
         cout <<"All teachers have been successfully saved"<<endl;
         tdatabaseOutFile.close();
@@ -243,6 +311,66 @@ void newStudent()
 //add or drop classes(student)
 void addDropClass()
 {
+    string fname;
+    string lname;
+    char response;
+    int j=0;
+
+    cout << "Please Enter your first name:" << endl;
+    cin >> fname;
+    cout << "Please enter your last name:" << endl;
+    cin >> lname;
+
+    ifstream sdatabaseInFile;
+
+    sdatabaseInFile.open("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/students.txt"); // open students.txt
+
+    if(sdatabaseInFile.fail())
+    {
+        cout<<"Cannot load file"<<endl;
+        return;
+    }
+    else
+    {
+
+        for(int i = 0; i < sizeof(sdb)/sizeof(sdb[0]); i++)
+        {
+            sdatabaseInFile>>
+            sdb[i].fname>>
+            sdb[i].lname>>
+            sdb[i].year>>
+            sdb[i].active>>
+            sdb[i].class1>>
+            sdb[i].class2>>
+            sdb[i].class3>>
+            sdb[i].class4>>
+            sdb[i].grade1>>
+            sdb[i].grade2>>
+            sdb[i].grade3>>
+            sdb[i].grade4;
+            //cout <<"Student no "<<i<<" loaded"<<endl;
+        }
+        //cout <<"All students have been successfully loaded"<<endl;
+    }
+
+    int i=0;
+    while (i <sizeof(sdb)/sizeof(sdb[0]))
+    {
+        if (sdb[i].fname == fname)
+        {
+            if (sdb[i].lname == lname)
+            {
+                if (sdb[i].active == 0)
+                {
+                    cout << "You have not been approved to add classes yet. Please check with an administrator." << endl;
+                    studentMenu();
+                }
+            }
+        }
+        i++;
+    }
+
+    sdatabaseInFile.close();
     char input;
     cout << "Do you want to add or drop class?\n"
          << "To add class enter (a) and to drop class enter (d) (a or d): ";
@@ -253,6 +381,15 @@ void addDropClass()
         char choice;
         cout << "Here is the list of classes offer this semester: " << endl;
         //here will be the classes file
+
+        ifstream classesInFile("/Volumes/Banksy/Users/kirbatron/HDD-Documents/QT Projects/Group_Project/classes.txt");
+
+        while (getline(classesInFile,line))
+        {
+            cout << line << endl;
+        }
+
+
         cout << "Please enter the number of the class you want to take: ";
         cin >> numb;
         //I will put in if-else statement here to get the class that user chose
@@ -514,12 +651,14 @@ void defaultMenu()
 
 int main()
 {
+    displayStudentStructure();
     getdbSize();
 
     sdatabase_load();
 
     tdatabase_load();
     classes_load();
+    tdatabase_save();
     //Test print the database after initialization
     /*
     for(int j = 0; j < 5; j++)
